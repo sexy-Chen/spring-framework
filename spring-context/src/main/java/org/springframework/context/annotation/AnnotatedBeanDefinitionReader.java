@@ -263,9 +263,11 @@ public class AnnotatedBeanDefinitionReader {
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
+				// 处理Primary注解
 				if (Primary.class == qualifier) {
 					abd.setPrimary(true);
 				}
+				// 设置属性是否懒加载
 				else if (Lazy.class == qualifier) {
 					abd.setLazyInit(true);
 				}
