@@ -193,10 +193,12 @@ class ConfigurationClassBeanDefinitionReader {
 		Assert.state(bean != null, "No @Bean annotation attributes");
 
 		// Consider name and any aliases
+		// bean名称和bean别名
 		List<String> names = new ArrayList<>(Arrays.asList(bean.getStringArray("name")));
 		String beanName = (!names.isEmpty() ? names.remove(0) : methodName);
 
 		// Register aliases even when overridden
+		// 即使被覆盖也需要注册别名
 		for (String alias : names) {
 			this.registry.registerAlias(beanName, alias);
 		}

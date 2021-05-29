@@ -52,9 +52,15 @@ import org.springframework.util.Assert;
  * @see org.springframework.context.support.GenericXmlApplicationContext
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
-
+	
+	/**
+	 * 注解bean定义的读取器
+	 */
 	private final AnnotatedBeanDefinitionReader reader;
-
+	
+	/**
+	 * 类路径的下的bean定义扫描器
+	 */
 	private final ClassPathBeanDefinitionScanner scanner;
 
 
@@ -64,8 +70,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext() {
 		// 初始化的bean定义的reader
+		// 完成了spring内部beanDefinition的注册(主要是后置处理器)
 		this.reader = new AnnotatedBeanDefinitionReader(this);
-		// 扫描器
+		// 扫描器,解析配置类不是这个类扫描,这个类可供开发者使用context.scan("xxx")指定扫描的包
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -86,8 +93,11 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
+		// 调用构造函数
 		this();
+		// 注册配置类
 		register(componentClasses);
+		// ioc容器刷新接口
 		refresh();
 	}
 
